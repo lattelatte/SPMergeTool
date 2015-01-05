@@ -97,5 +97,48 @@ namespace SPMerge
 
             chbStep1.Checked = true;
         }
+
+        private bool CheckOrder(int step)
+        {
+
+            foreach (Control ctl in this.grbProcess.Controls)
+            {
+                if (ctl is CheckBox)
+                {
+                    if (ctl.Name.CompareTo("chkStep" + step) < 0)
+                    {
+                        if (((CheckBox)ctl).Checked == false)
+                        {
+                            MessageBox.Show("请检查执行顺序");
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
+        private void btnCreateDB_Click(object sender, EventArgs e)
+        {
+            if (!this.CheckOrder(2))
+            {
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(this.txtNewDBName.Text))
+            {
+                MessageBox.Show("新库名不能为空");
+                return;
+            }
+
+
+
+
+        }
+
+
+
+
+
     }
 }

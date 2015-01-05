@@ -35,11 +35,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtUserName = new System.Windows.Forms.TextBox();
             this.txtPassword = new System.Windows.Forms.TextBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.grbProcess = new System.Windows.Forms.GroupBox();
             this.lblSPCount = new System.Windows.Forms.Label();
             this.btnSearchSPCount = new System.Windows.Forms.Button();
             this.btnCreateDB = new System.Windows.Forms.Button();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.txtNewDBName = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.chbStep1 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
@@ -66,7 +66,7 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.lsvSPList = new System.Windows.Forms.ListView();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.grbProcess.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -128,39 +128,39 @@
             this.txtPassword.Size = new System.Drawing.Size(167, 22);
             this.txtPassword.TabIndex = 4;
             // 
-            // groupBox2
+            // grbProcess
             // 
-            this.groupBox2.Controls.Add(this.lsvSPList);
-            this.groupBox2.Controls.Add(this.label12);
-            this.groupBox2.Controls.Add(this.label10);
-            this.groupBox2.Controls.Add(this.label11);
-            this.groupBox2.Controls.Add(this.label9);
-            this.groupBox2.Controls.Add(this.label8);
-            this.groupBox2.Controls.Add(this.button9);
-            this.groupBox2.Controls.Add(this.checkBox6);
-            this.groupBox2.Controls.Add(this.label7);
-            this.groupBox2.Controls.Add(this.button8);
-            this.groupBox2.Controls.Add(this.checkBox5);
-            this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Controls.Add(this.button6);
-            this.groupBox2.Controls.Add(this.checkBox4);
-            this.groupBox2.Controls.Add(this.button5);
-            this.groupBox2.Controls.Add(this.checkBox3);
-            this.groupBox2.Controls.Add(this.btnDropDB);
-            this.groupBox2.Controls.Add(this.checkBox2);
-            this.groupBox2.Controls.Add(this.chbStep1);
-            this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.textBox3);
-            this.groupBox2.Controls.Add(this.btnCreateDB);
-            this.groupBox2.Controls.Add(this.btnSearchSPCount);
-            this.groupBox2.Controls.Add(this.lblSPCount);
-            this.groupBox2.Location = new System.Drawing.Point(64, 179);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(962, 447);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "操作流程";
+            this.grbProcess.Controls.Add(this.lsvSPList);
+            this.grbProcess.Controls.Add(this.label12);
+            this.grbProcess.Controls.Add(this.label10);
+            this.grbProcess.Controls.Add(this.label11);
+            this.grbProcess.Controls.Add(this.label9);
+            this.grbProcess.Controls.Add(this.label8);
+            this.grbProcess.Controls.Add(this.button9);
+            this.grbProcess.Controls.Add(this.checkBox6);
+            this.grbProcess.Controls.Add(this.label7);
+            this.grbProcess.Controls.Add(this.button8);
+            this.grbProcess.Controls.Add(this.checkBox5);
+            this.grbProcess.Controls.Add(this.label6);
+            this.grbProcess.Controls.Add(this.label5);
+            this.grbProcess.Controls.Add(this.button6);
+            this.grbProcess.Controls.Add(this.checkBox4);
+            this.grbProcess.Controls.Add(this.button5);
+            this.grbProcess.Controls.Add(this.checkBox3);
+            this.grbProcess.Controls.Add(this.btnDropDB);
+            this.grbProcess.Controls.Add(this.checkBox2);
+            this.grbProcess.Controls.Add(this.chbStep1);
+            this.grbProcess.Controls.Add(this.label4);
+            this.grbProcess.Controls.Add(this.txtNewDBName);
+            this.grbProcess.Controls.Add(this.btnCreateDB);
+            this.grbProcess.Controls.Add(this.btnSearchSPCount);
+            this.grbProcess.Controls.Add(this.lblSPCount);
+            this.grbProcess.Location = new System.Drawing.Point(64, 179);
+            this.grbProcess.Name = "grbProcess";
+            this.grbProcess.Size = new System.Drawing.Size(962, 447);
+            this.grbProcess.TabIndex = 1;
+            this.grbProcess.TabStop = false;
+            this.grbProcess.Text = "操作流程";
             // 
             // lblSPCount
             // 
@@ -189,13 +189,14 @@
             this.btnCreateDB.TabIndex = 2;
             this.btnCreateDB.Text = "创建";
             this.btnCreateDB.UseVisualStyleBackColor = true;
+            this.btnCreateDB.Click += new System.EventHandler(this.btnCreateDB_Click);
             // 
-            // textBox3
+            // txtNewDBName
             // 
-            this.textBox3.Location = new System.Drawing.Point(317, 118);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(205, 22);
-            this.textBox3.TabIndex = 3;
+            this.txtNewDBName.Location = new System.Drawing.Point(317, 118);
+            this.txtNewDBName.Name = "txtNewDBName";
+            this.txtNewDBName.Size = new System.Drawing.Size(205, 22);
+            this.txtNewDBName.TabIndex = 3;
             // 
             // label4
             // 
@@ -429,15 +430,15 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1231, 676);
-            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.grbProcess);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
             this.Text = "Main";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.grbProcess.ResumeLayout(false);
+            this.grbProcess.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -450,10 +451,10 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnChangeConnectionString;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox grbProcess;
         private System.Windows.Forms.CheckBox chbStep1;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox txtNewDBName;
         private System.Windows.Forms.Button btnCreateDB;
         private System.Windows.Forms.Button btnSearchSPCount;
         private System.Windows.Forms.Label lblSPCount;
