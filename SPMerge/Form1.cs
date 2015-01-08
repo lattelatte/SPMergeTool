@@ -328,6 +328,10 @@ ORDER BY FK", this.txtNewDBName.Text);
         {
             DBHelper.DBName = this.txtNewDBName.Text;
             UpdateHierarchy();
+
+            MessageBox.Show("恭喜你，千辛万苦完成了升级！！");
+
+            this.Close();
         }
 
         private void UpdateHierarchy()
