@@ -87,19 +87,23 @@ namespace SPMerge
 
         private void btnSearchSPCount_Click(object sender, EventArgs e)
         {
-            DataTable dt = DBHelper.QuerySql("select DbDatabase,Name from ServiceProvider where deploystatus=1");
+            DataTable dt = DBHelper.QuerySql("select Id,DbDatabase,Name from ServiceProvider where deploystatus=1");
 
             lblSPCount.Text = "发现SP数量：" + dt.Rows.Count.ToString();
-            Dictionary<string, int> dic = new Dictionary<string, int>();
+            Dictionary<string, int[]> dic = new Dictionary<string, int[]>();
             int start = 100000;
 
             foreach (DataRow dr in dt.Rows)
             {
                 lsvSPList.Items.Add(new ListViewItem(dr["Name"].ToString()));
-                dic.Add(dr["DbDatabase"].ToString(), start);
+                dic.Add(dr["DbDatabase"].ToString(), new int[] { start, int.Parse(dr["Id"].ToString()) });
                 start += 100000;
             }
             DBHelper.DBMapper = dic;
+
+
+
+
             chbStep1.Checked = true;
         }
 
@@ -245,31 +249,147 @@ ORDER BY FK", this.txtNewDBName.Text);
 
             this.lblRemoveConstraintCount.Text = "已去除表数目:" + dt.Rows.Count;
 
-            this.chbStep4.Checked = true;
+            this.chbStep3.Checked = true;
 
         }
 
         private void btnGenerateSQLFile_Click(object sender, EventArgs e)
         {
-            Dictionary<string, int> dic = DBHelper.DBMapper;
+            Dictionary<string, int[]> dic = DBHelper.DBMapper;
 
-            foreach (KeyValuePair<string, int> p in dic)
+            if (Directory.Exists("./CreateFile/"))
+            {
+                try
+                {
+                    Directory.Delete("./CreateFile", true);
+
+                }
+                catch (Exception exc)
+                {
+
+                }
+            }
+            Directory.CreateDirectory("./CreateFile/");
+            Directory.CreateDirectory("./CreateFile/Meta/");
+
+            GenerateMetadataSQL();
+            foreach (KeyValuePair<string, int[]> p in dic)
             {
                 DBHelper.DBName = p.Key;
+
+                Directory.CreateDirectory("./CreateFile/" + p.Key + "/");
 
                 GenerateSQLFile(p.Value);
             }
         }
 
-        private void GenerateSQLFile(int delta)
+        private void GenerateSQLFile(int[] delta)
         {
+            List<UpgradeObject> list = new UpgradeObjects().List;
+            CommonProcessor processor = new CommonProcessor();
+            foreach (UpgradeObject item in list)
+            {
+                processor.UpgradeColumnsName = item.UpdateColumns;
+                processor.TableName = item.TableName;
+                processor.SpName = DBHelper.DBName;
+                processor.Delta = delta[0];
+                processor.SpId = delta[1];
+                processor.GenerateSQL();
+            }
+        }
+
+        private void btnImport_Click(object sender, EventArgs e)
+        {
+            DirectoryInfo[] dirs = new DirectoryInfo("./CreateFile/").GetDirectories();
+
+            DBHelper.DBName = this.txtNewDBName.Text;
+
+            foreach (DirectoryInfo item in dirs)
+            {
+                FileInfo[] files = item.GetFiles();
+                foreach (FileInfo file in files)
+                {
+                    DBHelper.ExecuteSqlFile(file.FullName, "");
+                }
+            }
 
         }
 
-        private void btnAddSPColumn_Click(object sender, EventArgs e)
+
+        private void btnRestore_Click(object sender, EventArgs e)
         {
+            DBHelper.DBName = this.txtNewDBName.Text;
+            DBHelper.ExecuteSqlFile("./fk_idx.sql", "");
+
 
         }
+
+        private void btnOthers_Click(object sender, EventArgs e)
+        {
+            DBHelper.DBName = this.txtNewDBName.Text;
+            UpdateHierarchy();
+        }
+
+        private void UpdateHierarchy()
+        {
+            DataTable dt = DBHelper.QuerySql("select * from Hierarchy order by pathlevel,updatetime");
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                var sql = new StringBuilder("DECLARE @parent hierarchyid, @left hierarchyid, @path hierarchyid, @pathlevel int;");
+                if (dr["ParentId"] is DBNull)
+                {
+                    sql.Append(@"SET @parent = hierarchyid::GetRoot();");
+                    sql.Append(@"SET @left= (SELECT TOP 1 Path from Hierarchy WHERE TYPE=-1 ORDER BY Id DESC);");
+                    sql.Append("if(@left = 0x) set @left = null; ");
+                }
+                else
+                {
+                    sql.Append(@"SET @parent =(SELECT Path from Hierarchy WHERE Id=" + dr["ParentId"].ToString() + ");");
+                    sql.Append(@"SET @left= (SELECT TOP 1 Path from Hierarchy WHERE ParentId=" + dr["ParentId"].ToString() + " ORDER BY Id DESC);");
+                    sql.Append("if(@left = 0x) set @left = null; ");
+                }
+                sql.Append(@"
+SET @path = @parent.GetDescendant(@left,NULL);
+SET @pathlevel = @path.GetLevel();
+UPDATE Hierarchy SET Path=@path, PathLevel=@pathlevel where ID=" + dr["Id"].ToString());
+                DBHelper.ExecuteSql(sql.ToString());
+            }
+        }
+
+        private void GenerateMetadataSQL()
+        {
+            DBHelper.DBName = null;
+
+            CommonProcessor cp = new CommonProcessor();
+
+            cp.SpId = -1;
+            cp.TableName = "User";
+            cp.SpName = "Meta";
+            cp.UpgradeColumnsName = new string[] { };
+            cp.Delta = 0;
+            cp.GenerateSQL();
+
+            cp.TableName = "AppKeySecret";
+            cp.GenerateSQL();
+
+            cp.TableName = "ServiceProvider";
+            cp.SelectColumnsName = new string[] { "Id", "UserName", "Name", "Address", "Telephone", "Email", "StartDate", "Status", "Comment", "DeployStatus", "UpdateTime", "UpdateUser" };
+            Dictionary<string, string> columnValue = new Dictionary<string, string>();
+            columnValue.Add("1", "Domain,N'SEChina'");
+            columnValue.Add("3", "Domain,N'sp_demo'");
+            columnValue.Add("4", "Domain,N'controlsys'");
+            columnValue.Add("5", "Domain,N'excellent'");
+            columnValue.Add("6", "Domain,N'colorlife'");
+            columnValue.Add("7", "Domain,N'gcdw'");
+            columnValue.Add("8", "Domain,N'watersupply'");
+            cp.ColumnValue = columnValue;
+            cp.GenerateSQL();
+
+        }
+
+
+
 
 
 

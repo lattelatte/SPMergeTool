@@ -39,6 +39,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnChangeConnectionString = new System.Windows.Forms.Button();
             this.grbProcess = new System.Windows.Forms.GroupBox();
+            this.btnOthers = new System.Windows.Forms.Button();
+            this.chbStep7 = new System.Windows.Forms.CheckBox();
+            this.chbStep3 = new System.Windows.Forms.CheckBox();
             this.lblCreateNewDBStatus = new System.Windows.Forms.Label();
             this.lsvSPList = new System.Windows.Forms.ListView();
             this.label12 = new System.Windows.Forms.Label();
@@ -46,17 +49,16 @@
             this.label11 = new System.Windows.Forms.Label();
             this.lblGenerateTotal = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.button9 = new System.Windows.Forms.Button();
-            this.chbStep7 = new System.Windows.Forms.CheckBox();
+            this.btnRestore = new System.Windows.Forms.Button();
+            this.chbStep6 = new System.Windows.Forms.CheckBox();
             this.lblRemoveConstraintCount = new System.Windows.Forms.Label();
             this.btnRemoveConstraint = new System.Windows.Forms.Button();
-            this.chbStep4 = new System.Windows.Forms.CheckBox();
             this.lblGenerateTableName = new System.Windows.Forms.Label();
             this.lblGenerateDBName = new System.Windows.Forms.Label();
-            this.button6 = new System.Windows.Forms.Button();
-            this.chbStep6 = new System.Windows.Forms.CheckBox();
-            this.btnGenerateSQLFile = new System.Windows.Forms.Button();
+            this.btnImport = new System.Windows.Forms.Button();
             this.chbStep5 = new System.Windows.Forms.CheckBox();
+            this.btnGenerateSQLFile = new System.Windows.Forms.Button();
+            this.chbStep4 = new System.Windows.Forms.CheckBox();
             this.btnDropDB = new System.Windows.Forms.Button();
             this.chbStep2 = new System.Windows.Forms.CheckBox();
             this.chbStep1 = new System.Windows.Forms.CheckBox();
@@ -68,9 +70,6 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.prgbar = new System.Windows.Forms.ToolStripProgressBar();
-            this.chbStep3 = new System.Windows.Forms.CheckBox();
-            this.btnAddSPColumn = new System.Windows.Forms.Button();
-            this.lblSPColumnStatus = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.grbProcess.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -163,8 +162,8 @@
             // 
             // grbProcess
             // 
-            this.grbProcess.Controls.Add(this.lblSPColumnStatus);
-            this.grbProcess.Controls.Add(this.btnAddSPColumn);
+            this.grbProcess.Controls.Add(this.btnOthers);
+            this.grbProcess.Controls.Add(this.chbStep7);
             this.grbProcess.Controls.Add(this.chbStep3);
             this.grbProcess.Controls.Add(this.lblCreateNewDBStatus);
             this.grbProcess.Controls.Add(this.lsvSPList);
@@ -173,17 +172,16 @@
             this.grbProcess.Controls.Add(this.label11);
             this.grbProcess.Controls.Add(this.lblGenerateTotal);
             this.grbProcess.Controls.Add(this.label8);
-            this.grbProcess.Controls.Add(this.button9);
-            this.grbProcess.Controls.Add(this.chbStep7);
+            this.grbProcess.Controls.Add(this.btnRestore);
+            this.grbProcess.Controls.Add(this.chbStep6);
             this.grbProcess.Controls.Add(this.lblRemoveConstraintCount);
             this.grbProcess.Controls.Add(this.btnRemoveConstraint);
-            this.grbProcess.Controls.Add(this.chbStep4);
             this.grbProcess.Controls.Add(this.lblGenerateTableName);
             this.grbProcess.Controls.Add(this.lblGenerateDBName);
-            this.grbProcess.Controls.Add(this.button6);
-            this.grbProcess.Controls.Add(this.chbStep6);
-            this.grbProcess.Controls.Add(this.btnGenerateSQLFile);
+            this.grbProcess.Controls.Add(this.btnImport);
             this.grbProcess.Controls.Add(this.chbStep5);
+            this.grbProcess.Controls.Add(this.btnGenerateSQLFile);
+            this.grbProcess.Controls.Add(this.chbStep4);
             this.grbProcess.Controls.Add(this.btnDropDB);
             this.grbProcess.Controls.Add(this.chbStep2);
             this.grbProcess.Controls.Add(this.chbStep1);
@@ -198,6 +196,38 @@
             this.grbProcess.TabIndex = 1;
             this.grbProcess.TabStop = false;
             this.grbProcess.Text = "操作流程";
+            // 
+            // btnOthers
+            // 
+            this.btnOthers.Location = new System.Drawing.Point(244, 436);
+            this.btnOthers.Name = "btnOthers";
+            this.btnOthers.Size = new System.Drawing.Size(278, 35);
+            this.btnOthers.TabIndex = 29;
+            this.btnOthers.Text = "最后一公里！！";
+            this.btnOthers.UseVisualStyleBackColor = true;
+            this.btnOthers.Click += new System.EventHandler(this.btnOthers_Click);
+            // 
+            // chbStep7
+            // 
+            this.chbStep7.AutoSize = true;
+            this.chbStep7.Enabled = false;
+            this.chbStep7.Location = new System.Drawing.Point(30, 444);
+            this.chbStep7.Name = "chbStep7";
+            this.chbStep7.Size = new System.Drawing.Size(98, 21);
+            this.chbStep7.TabIndex = 28;
+            this.chbStep7.Text = "7.其他操作";
+            this.chbStep7.UseVisualStyleBackColor = true;
+            // 
+            // chbStep3
+            // 
+            this.chbStep3.AutoSize = true;
+            this.chbStep3.Enabled = false;
+            this.chbStep3.Location = new System.Drawing.Point(30, 165);
+            this.chbStep3.Name = "chbStep3";
+            this.chbStep3.Size = new System.Drawing.Size(140, 21);
+            this.chbStep3.TabIndex = 27;
+            this.chbStep3.Text = "3.去除数据库约束";
+            this.chbStep3.UseVisualStyleBackColor = true;
             // 
             // lblCreateNewDBStatus
             // 
@@ -220,7 +250,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(347, 405);
+            this.label12.Location = new System.Drawing.Point(347, 346);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(92, 17);
             this.label12.TabIndex = 24;
@@ -229,7 +259,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(578, 386);
+            this.label10.Location = new System.Drawing.Point(578, 327);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(81, 17);
             this.label10.TabIndex = 23;
@@ -238,7 +268,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(578, 351);
+            this.label11.Location = new System.Drawing.Point(578, 292);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(82, 17);
             this.label11.TabIndex = 22;
@@ -247,7 +277,7 @@
             // lblGenerateTotal
             // 
             this.lblGenerateTotal.AutoSize = true;
-            this.lblGenerateTotal.Location = new System.Drawing.Point(347, 327);
+            this.lblGenerateTotal.Location = new System.Drawing.Point(347, 268);
             this.lblGenerateTotal.Name = "lblGenerateTotal";
             this.lblGenerateTotal.Size = new System.Drawing.Size(92, 17);
             this.lblGenerateTotal.TabIndex = 21;
@@ -256,36 +286,37 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(579, 450);
+            this.label8.Location = new System.Drawing.Point(579, 391);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(92, 17);
             this.label8.TabIndex = 20;
             this.label8.Text = "已恢复表数目";
             // 
-            // button9
+            // btnRestore
             // 
-            this.button9.Location = new System.Drawing.Point(244, 438);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(278, 35);
-            this.button9.TabIndex = 19;
-            this.button9.Text = "恢复约束";
-            this.button9.UseVisualStyleBackColor = true;
+            this.btnRestore.Location = new System.Drawing.Point(244, 379);
+            this.btnRestore.Name = "btnRestore";
+            this.btnRestore.Size = new System.Drawing.Size(278, 35);
+            this.btnRestore.TabIndex = 19;
+            this.btnRestore.Text = "恢复约束";
+            this.btnRestore.UseVisualStyleBackColor = true;
+            this.btnRestore.Click += new System.EventHandler(this.btnRestore_Click);
             // 
-            // chbStep7
+            // chbStep6
             // 
-            this.chbStep7.AutoSize = true;
-            this.chbStep7.Enabled = false;
-            this.chbStep7.Location = new System.Drawing.Point(30, 446);
-            this.chbStep7.Name = "chbStep7";
-            this.chbStep7.Size = new System.Drawing.Size(140, 21);
-            this.chbStep7.TabIndex = 18;
-            this.chbStep7.Text = "7.恢复数据库限制";
-            this.chbStep7.UseVisualStyleBackColor = true;
+            this.chbStep6.AutoSize = true;
+            this.chbStep6.Enabled = false;
+            this.chbStep6.Location = new System.Drawing.Point(30, 387);
+            this.chbStep6.Name = "chbStep6";
+            this.chbStep6.Size = new System.Drawing.Size(140, 21);
+            this.chbStep6.TabIndex = 18;
+            this.chbStep6.Text = "6.恢复数据库限制";
+            this.chbStep6.UseVisualStyleBackColor = true;
             // 
             // lblRemoveConstraintCount
             // 
             this.lblRemoveConstraintCount.AutoSize = true;
-            this.lblRemoveConstraintCount.Location = new System.Drawing.Point(579, 228);
+            this.lblRemoveConstraintCount.Location = new System.Drawing.Point(579, 169);
             this.lblRemoveConstraintCount.Name = "lblRemoveConstraintCount";
             this.lblRemoveConstraintCount.Size = new System.Drawing.Size(92, 17);
             this.lblRemoveConstraintCount.TabIndex = 17;
@@ -293,7 +324,7 @@
             // 
             // btnRemoveConstraint
             // 
-            this.btnRemoveConstraint.Location = new System.Drawing.Point(244, 219);
+            this.btnRemoveConstraint.Location = new System.Drawing.Point(244, 160);
             this.btnRemoveConstraint.Name = "btnRemoveConstraint";
             this.btnRemoveConstraint.Size = new System.Drawing.Size(278, 35);
             this.btnRemoveConstraint.TabIndex = 16;
@@ -301,21 +332,10 @@
             this.btnRemoveConstraint.UseVisualStyleBackColor = true;
             this.btnRemoveConstraint.Click += new System.EventHandler(this.btnRemoveConstraint_Click);
             // 
-            // chbStep4
-            // 
-            this.chbStep4.AutoSize = true;
-            this.chbStep4.Enabled = false;
-            this.chbStep4.Location = new System.Drawing.Point(30, 227);
-            this.chbStep4.Name = "chbStep4";
-            this.chbStep4.Size = new System.Drawing.Size(140, 21);
-            this.chbStep4.TabIndex = 15;
-            this.chbStep4.Text = "4.去除数据库约束";
-            this.chbStep4.UseVisualStyleBackColor = true;
-            // 
             // lblGenerateTableName
             // 
             this.lblGenerateTableName.AutoSize = true;
-            this.lblGenerateTableName.Location = new System.Drawing.Point(579, 307);
+            this.lblGenerateTableName.Location = new System.Drawing.Point(579, 248);
             this.lblGenerateTableName.Name = "lblGenerateTableName";
             this.lblGenerateTableName.Size = new System.Drawing.Size(81, 17);
             this.lblGenerateTableName.TabIndex = 14;
@@ -324,35 +344,36 @@
             // lblGenerateDBName
             // 
             this.lblGenerateDBName.AutoSize = true;
-            this.lblGenerateDBName.Location = new System.Drawing.Point(578, 265);
+            this.lblGenerateDBName.Location = new System.Drawing.Point(578, 206);
             this.lblGenerateDBName.Name = "lblGenerateDBName";
             this.lblGenerateDBName.Size = new System.Drawing.Size(82, 17);
             this.lblGenerateDBName.TabIndex = 13;
             this.lblGenerateDBName.Text = "SPDBName";
             // 
-            // button6
+            // btnImport
             // 
-            this.button6.Location = new System.Drawing.Point(244, 355);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(278, 35);
-            this.button6.TabIndex = 12;
-            this.button6.Text = "开始导入";
-            this.button6.UseVisualStyleBackColor = true;
+            this.btnImport.Location = new System.Drawing.Point(244, 296);
+            this.btnImport.Name = "btnImport";
+            this.btnImport.Size = new System.Drawing.Size(278, 35);
+            this.btnImport.TabIndex = 12;
+            this.btnImport.Text = "开始导入";
+            this.btnImport.UseVisualStyleBackColor = true;
+            this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
             // 
-            // chbStep6
+            // chbStep5
             // 
-            this.chbStep6.AutoSize = true;
-            this.chbStep6.Enabled = false;
-            this.chbStep6.Location = new System.Drawing.Point(30, 363);
-            this.chbStep6.Name = "chbStep6";
-            this.chbStep6.Size = new System.Drawing.Size(140, 21);
-            this.chbStep6.TabIndex = 11;
-            this.chbStep6.Text = "6.向新库导入数据";
-            this.chbStep6.UseVisualStyleBackColor = true;
+            this.chbStep5.AutoSize = true;
+            this.chbStep5.Enabled = false;
+            this.chbStep5.Location = new System.Drawing.Point(30, 304);
+            this.chbStep5.Name = "chbStep5";
+            this.chbStep5.Size = new System.Drawing.Size(140, 21);
+            this.chbStep5.TabIndex = 11;
+            this.chbStep5.Text = "5.向新库导入数据";
+            this.chbStep5.UseVisualStyleBackColor = true;
             // 
             // btnGenerateSQLFile
             // 
-            this.btnGenerateSQLFile.Location = new System.Drawing.Point(244, 279);
+            this.btnGenerateSQLFile.Location = new System.Drawing.Point(244, 220);
             this.btnGenerateSQLFile.Name = "btnGenerateSQLFile";
             this.btnGenerateSQLFile.Size = new System.Drawing.Size(278, 35);
             this.btnGenerateSQLFile.TabIndex = 10;
@@ -360,16 +381,16 @@
             this.btnGenerateSQLFile.UseVisualStyleBackColor = true;
             this.btnGenerateSQLFile.Click += new System.EventHandler(this.btnGenerateSQLFile_Click);
             // 
-            // chbStep5
+            // chbStep4
             // 
-            this.chbStep5.AutoSize = true;
-            this.chbStep5.Enabled = false;
-            this.chbStep5.Location = new System.Drawing.Point(30, 287);
-            this.chbStep5.Name = "chbStep5";
-            this.chbStep5.Size = new System.Drawing.Size(172, 21);
-            this.chbStep5.TabIndex = 9;
-            this.chbStep5.Text = "5.根据SP生产SQL文件";
-            this.chbStep5.UseVisualStyleBackColor = true;
+            this.chbStep4.AutoSize = true;
+            this.chbStep4.Enabled = false;
+            this.chbStep4.Location = new System.Drawing.Point(30, 228);
+            this.chbStep4.Name = "chbStep4";
+            this.chbStep4.Size = new System.Drawing.Size(172, 21);
+            this.chbStep4.TabIndex = 9;
+            this.chbStep4.Text = "4.根据SP生产SQL文件";
+            this.chbStep4.UseVisualStyleBackColor = true;
             // 
             // btnDropDB
             // 
@@ -463,36 +484,6 @@
             this.prgbar.Name = "prgbar";
             this.prgbar.Size = new System.Drawing.Size(100, 16);
             // 
-            // chbStep3
-            // 
-            this.chbStep3.AutoSize = true;
-            this.chbStep3.Enabled = false;
-            this.chbStep3.Location = new System.Drawing.Point(29, 172);
-            this.chbStep3.Name = "chbStep3";
-            this.chbStep3.Size = new System.Drawing.Size(112, 21);
-            this.chbStep3.TabIndex = 27;
-            this.chbStep3.Text = "3.生成SpId列";
-            this.chbStep3.UseVisualStyleBackColor = true;
-            // 
-            // btnAddSPColumn
-            // 
-            this.btnAddSPColumn.Location = new System.Drawing.Point(244, 167);
-            this.btnAddSPColumn.Name = "btnAddSPColumn";
-            this.btnAddSPColumn.Size = new System.Drawing.Size(278, 35);
-            this.btnAddSPColumn.TabIndex = 28;
-            this.btnAddSPColumn.Text = "生成";
-            this.btnAddSPColumn.UseVisualStyleBackColor = true;
-            this.btnAddSPColumn.Click += new System.EventHandler(this.btnAddSPColumn_Click);
-            // 
-            // lblSPColumnStatus
-            // 
-            this.lblSPColumnStatus.AutoSize = true;
-            this.lblSPColumnStatus.Location = new System.Drawing.Point(579, 176);
-            this.lblSPColumnStatus.Name = "lblSPColumnStatus";
-            this.lblSPColumnStatus.Size = new System.Drawing.Size(64, 17);
-            this.lblSPColumnStatus.TabIndex = 29;
-            this.lblSPColumnStatus.Text = "影响表数";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -532,18 +523,17 @@
         private System.Windows.Forms.Label lblSPCount;
         private System.Windows.Forms.Label lblGenerateTableName;
         private System.Windows.Forms.Label lblGenerateDBName;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.CheckBox chbStep6;
-        private System.Windows.Forms.Button btnGenerateSQLFile;
+        private System.Windows.Forms.Button btnImport;
         private System.Windows.Forms.CheckBox chbStep5;
+        private System.Windows.Forms.Button btnGenerateSQLFile;
+        private System.Windows.Forms.CheckBox chbStep4;
         private System.Windows.Forms.Button btnDropDB;
         private System.Windows.Forms.CheckBox chbStep2;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.CheckBox chbStep7;
+        private System.Windows.Forms.Button btnRestore;
+        private System.Windows.Forms.CheckBox chbStep6;
         private System.Windows.Forms.Label lblRemoveConstraintCount;
         private System.Windows.Forms.Button btnRemoveConstraint;
-        private System.Windows.Forms.CheckBox chbStep4;
         private System.Windows.Forms.Label lblGenerateTotal;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label10;
@@ -556,9 +546,9 @@
         private System.Windows.Forms.Label lblCreateNewDBStatus;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar prgbar;
-        private System.Windows.Forms.Label lblSPColumnStatus;
-        private System.Windows.Forms.Button btnAddSPColumn;
         private System.Windows.Forms.CheckBox chbStep3;
+        private System.Windows.Forms.Button btnOthers;
+        private System.Windows.Forms.CheckBox chbStep7;
     }
 }
 

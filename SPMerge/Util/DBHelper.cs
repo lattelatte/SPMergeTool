@@ -14,7 +14,7 @@ namespace SPMerge.Util
     public class DBHelper
     {
         internal static string DBName = null;
-        internal static Dictionary<string, int> DBMapper = new Dictionary<string, int>();
+        internal static Dictionary<string, int[]> DBMapper = new Dictionary<string, int[]>();
         public static bool Test()
         {
             try
@@ -61,7 +61,7 @@ namespace SPMerge.Util
             DBName = null;
         }
 
-     
+
 
         internal static void SaveConnString(string connStr)
         {
@@ -97,24 +97,49 @@ namespace SPMerge.Util
 
         public static void ExecuteSqlFile(string filePath, string head, params string[] replacement)
         {
-            string sql = string.Format(File.ReadAllText(filePath), replacement);
-
-            sql = head + "GO\r\n" + sql;
-
-            string[] commands = sql.Split(new string[] { "GO\r\n", "GO ", "GO\t", "go\r\n", "\r\nGO" }, StringSplitOptions.RemoveEmptyEntries);
-
-
-            using (SqlConnection conn = new SqlConnection(GetConnString()))
+            if (new FileInfo(filePath).Length > 1024 * 1024 * 10)
             {
-                conn.Open();
-                foreach (var item in commands)
+
+                using (SqlConnection conn = new SqlConnection(GetConnString()))
                 {
-                    using (SqlCommand cmd = new SqlCommand(item, conn))
+                    conn.Open();
+                    foreach (var sql in File.ReadLines(filePath, UTF8Encoding.UTF8))
                     {
-                        cmd.ExecuteNonQuery();
+                        if (string.IsNullOrWhiteSpace(sql)) continue;
+                        using (SqlCommand cmd = new SqlCommand(sql, conn))
+                        {
+                            cmd.ExecuteNonQuery();
+                        }
+
                     }
+
                 }
 
+            }
+            else
+            {
+                string sql = File.ReadAllText(filePath, UTF8Encoding.UTF8);
+                if (replacement.Length > 0)
+                {
+                    sql = string.Format(sql, replacement);
+                }
+                sql = head + "GO\r\n" + sql;
+
+                string[] commands = sql.Split(new string[] { "GO\r\n", "GO ", "GO\t", "go\r\n", "\r\nGO" }, StringSplitOptions.RemoveEmptyEntries);
+
+
+                using (SqlConnection conn = new SqlConnection(GetConnString()))
+                {
+                    conn.Open();
+                    foreach (var item in commands)
+                    {
+                        using (SqlCommand cmd = new SqlCommand(item, conn))
+                        {
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                }
             }
         }
 
