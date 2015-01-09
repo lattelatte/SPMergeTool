@@ -30,12 +30,14 @@ namespace SPMerge.Util
         }
         public string[] SelectColumnsName;
         public Dictionary<string, string> ColumnValue;
+        public bool IncludingSp = false;
         protected void RenderFile(StringBuilder sb)
         {
             string fileName = "./CreateFile/" + SpName + "/" + TableName + ".sql";
             if (File.Exists(fileName))
             {
-                File.Delete(fileName);
+                File.AppendAllText(fileName, sb.ToString());
+                return;
             }
 
             File.WriteAllText(fileName, sb.ToString());
@@ -54,14 +56,14 @@ namespace SPMerge.Util
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(string.Format(@"if exists (select 1 from sys.identity_columns i inner join sys.objects o on i.object_id = o.object_id where o.object_id = OBJECT_ID(N'{0}')) SET IDENTITY_INSERT [{0}] ON", TableName));
-            sb.AppendLine("delete from [" + TableName + "] \r\n");
+            //sb.AppendLine("delete from [" + TableName + "] \r\n");
             string pattern = "insert into [" + TableName + "]({0}) values({1})";
-
+            long idx = 0;
             foreach (DataRow row in dt.Rows)
             {
                 List<string> columns = new List<string>();
                 List<string> values = new List<string>();
-
+                idx++;
                 foreach (DataColumn column in dt.Columns)
                 {
                     if (column.ColumnName.ToLower() == "version")
@@ -80,13 +82,10 @@ namespace SPMerge.Util
                             values.Add("0x");
 
                         }
-                        else if (column.ColumnName.ToLower() == "spid")
-                        {
-                            values.Add(this.SpId.ToString());
-                        }
                         else if (this.UpgradeColumnsName.Contains(column.ColumnName.ToLower()))
                         {
-                            if (column.DataType == typeof(string))//syntax, todo
+
+                            if (column.DataType == typeof(string))
                             {
                                 string v = row[column].ToString().Replace("'", "''");
                                 if (!string.IsNullOrWhiteSpace(v))
@@ -112,7 +111,41 @@ namespace SPMerge.Util
                                 long newid = long.Parse(row[column].ToString());
                                 if (newid > 0)
                                 {
-                                    newid += Delta;
+                                    if (this.IncludingSp == false)
+                                    {
+                                        int m = 1;
+                                        if (TableName == "Widget" && column.ColumnName == "Id")
+                                        {
+                                            m = 7;
+                                        }
+                                        else if (TableName == "Dashboard" && column.ColumnName == "Id")
+                                        {
+                                            m = 2;
+                                        }
+                                        else if (column.ColumnName.Contains("WidgetId"))
+                                        {
+                                            m = 7;
+                                        }
+                                        else if (column.ColumnName.Contains("DashboardId"))
+                                        {
+                                            m = 2;
+                                        }
+                                        newid = newid + Delta * m;
+                                    }
+                                    else
+                                    {
+                                        int dd = int.Parse(row["ServiceProviderId"].ToString());
+                                        int ddd = 0;
+                                        foreach (KeyValuePair<string, int[]> item in DBHelper.DBMapper)
+                                        {
+                                            if (item.Value[1] == dd)
+                                            {
+                                                ddd = item.Value[0];
+                                                break;
+                                            }
+                                        }
+                                        newid += ddd;
+                                    }
                                 }
                                 values.Add(newid.ToString());
                             }
@@ -140,17 +173,36 @@ namespace SPMerge.Util
                     }
                 }
 
+                if (this.UpgradeColumnsName.Contains("spid"))
+                {
+                    columns.Add("[SpId]");
+                    values.Add(this.SpId.ToString());
+                }
+
                 if (this.ColumnValue != null)
                 {
-                    string v = this.ColumnValue[row["Id"].ToString()];
-                    string[] arr = v.Split(',');
+                    if (this.ColumnValue.ContainsKey(row["Id"].ToString()))
+                    {
+                        string v = this.ColumnValue[row["Id"].ToString()];
+                        string[] arr = v.Split(',');
 
-                    columns.Add(arr[0]);
-                    values.Add(arr[1]);
-
+                        columns.Add(arr[0]);
+                        values.Add(arr[1]);
+                    }
+                    else
+                    {
+                        continue;
+                    }
                 }
 
                 sb.AppendLine(string.Format(pattern, string.Join(",", columns.ToArray()), string.Join(",", values.ToArray())));
+
+                if (idx == 10000)
+                {
+                    RenderFile(sb);
+                    sb = new StringBuilder();
+                    idx = 0;
+                }
             }
             sb.AppendLine(string.Format(@"if exists (select 1 from sys.identity_columns i inner join sys.objects o on i.object_id = o.object_id where o.object_id = OBJECT_ID(N'{0}')) SET IDENTITY_INSERT [{0}] OFF", TableName));
             RenderFile(sb);

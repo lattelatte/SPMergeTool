@@ -97,7 +97,7 @@ namespace SPMerge.Util
 
         public static void ExecuteSqlFile(string filePath, string head, params string[] replacement)
         {
-            if (new FileInfo(filePath).Length > 1024 * 1024 * 10)
+            if (new FileInfo(filePath).Length > 1024 * 1024 * 20)
             {
 
                 using (SqlConnection conn = new SqlConnection(GetConnString()))

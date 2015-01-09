@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Aliyun.OpenServices">
+      <HintPath>C:\Users\sesa231118\Downloads\aliyun_dotnet_sdk_20140626\bin\Aliyun.OpenServices.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />

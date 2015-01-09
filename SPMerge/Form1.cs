@@ -1,9 +1,12 @@
-﻿using SPMerge.Util;
+﻿using Aliyun.OpenServices.OpenStorageService;
+using SPMerge.Util;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -277,10 +280,19 @@ ORDER BY FK", this.txtNewDBName.Text);
             {
                 DBHelper.DBName = p.Key;
 
+                CleanDB();
+
                 Directory.CreateDirectory("./CreateFile/" + p.Key + "/");
 
                 GenerateSQLFile(p.Value);
             }
+        }
+
+        private void CleanDB()
+        {
+            string sql = @"delete Widget where DashboardId in (select Id from Dashboard where UserId not in (select Id from [User]))
+delete Dashboard where UserId  not in (select Id from [User])";
+            DBHelper.ExecuteSql(sql);
         }
 
         private void GenerateSQLFile(int[] delta)
@@ -321,6 +333,11 @@ ORDER BY FK", this.txtNewDBName.Text);
             DBHelper.DBName = this.txtNewDBName.Text;
             DBHelper.ExecuteSqlFile("./fk_idx.sql", "");
 
+            string removeFK = "ALTER TABLE UserRole DROP CONSTRAINT FK_UserRole_Role";
+            DBHelper.ExecuteSql(removeFK);
+
+            string insert = "insert into UserRole(UserId,RoleId) values(1,-1)";
+            DBHelper.ExecuteSql(insert);
 
         }
 
@@ -329,9 +346,60 @@ ORDER BY FK", this.txtNewDBName.Text);
             DBHelper.DBName = this.txtNewDBName.Text;
             UpdateHierarchy();
 
+            //UploadImageToOSS();
+
             MessageBox.Show("恭喜你，千辛万苦完成了升级！！");
 
             this.Close();
+        }
+
+        private void UploadImageToOSS()
+        {
+            string accId = ConfigurationManager.AppSettings["accessId"];
+            string accKey = ConfigurationManager.AppSettings["accessKey"];
+            string proxyHost = ConfigurationManager.AppSettings["proxyHost"];
+            string proxyPort = ConfigurationManager.AppSettings["proxyPort"];
+            OssClient client = new OssClient(
+            new Uri("http://oss-cn-hangzhou.aliyuncs.com"),
+            accId,
+            accKey,
+            new Aliyun.OpenServices.ClientConfiguration
+            {
+                ProxyHost = proxyHost,
+                ProxyPort = int.Parse(proxyPort)
+            });
+
+            var sql = "select id, buildingId, Picture from BuildingPicture";
+
+            DataTable dt = DBHelper.QuerySql(sql);
+
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                byte[] ss = (byte[])dr["Picture"];
+                using (MemoryStream oStream = new MemoryStream(ss))
+                {
+                    using (var oimg = Image.FromStream(oStream))
+                    {
+                        string type = "";
+                        if (oimg.RawFormat == ImageFormat.Jpeg)
+                        {
+                            type = "image/jpg";
+                        }
+                        else if (oimg.RawFormat == ImageFormat.Png)
+                        {
+                            type = "image/png";
+                        }
+                        else
+                        {
+                            type = "image/gif";
+                        }
+                        //client.PutObject("jazz", "" + item.Id + ".jpg", stream, new ObjectMetadata { ContentType = "image/jpg" });
+
+                    }
+                }
+
+            }
         }
 
         private void UpdateHierarchy()
@@ -377,7 +445,18 @@ UPDATE Hierarchy SET Path=@path, PathLevel=@pathlevel where ID=" + dr["Id"].ToSt
             cp.TableName = "AppKeySecret";
             cp.GenerateSQL();
 
+
+            cp.TableName = "RecordCount";
+            cp.UpgradeColumnsName = new string[] { "CustomerId" };
+            cp.IncludingSp = true;
+            cp.GenerateSQL();
+
+
+
+
             cp.TableName = "ServiceProvider";
+            cp.IncludingSp = false;
+            cp.UpgradeColumnsName = new string[] { };
             cp.SelectColumnsName = new string[] { "Id", "UserName", "Name", "Address", "Telephone", "Email", "StartDate", "Status", "Comment", "DeployStatus", "UpdateTime", "UpdateUser" };
             Dictionary<string, string> columnValue = new Dictionary<string, string>();
             columnValue.Add("1", "Domain,N'SEChina'");
