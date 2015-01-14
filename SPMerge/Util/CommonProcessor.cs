@@ -211,7 +211,7 @@ namespace SPMerge.Util
         private string GetSyntax(string v)
         {
             string ret = v;
-
+            Dictionary<string, bool> dic = new Dictionary<string, bool>();
             Regex p = new Regex("(\"HierarchyId\"|\"SystemDimensionTemplateItemId\"|\"AreaDimensionId\"):(\\d+)");
             MatchCollection ms;
             ms = p.Matches(v);
@@ -236,6 +236,7 @@ namespace SPMerge.Util
 
                 foreach (Match item in ms)
                 {
+                    if (dic.ContainsKey(item.Value)) continue;
                     id = long.Parse(item.Groups[2].Value);
                     if (id > 0)
                     {
@@ -243,7 +244,7 @@ namespace SPMerge.Util
                     }
 
                     ret = ret.Replace(item.Value, item.Groups[1].Value + ":" + id);
-
+                    dic.Add(item.Value, true);
                 }
 
 

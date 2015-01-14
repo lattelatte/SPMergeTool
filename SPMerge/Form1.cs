@@ -1,4 +1,5 @@
-﻿using Aliyun.OpenServices.OpenStorageService;
+﻿using Aliyun.OpenServices;
+using Aliyun.OpenServices.OpenStorageService;
 using SPMerge.Util;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -286,6 +289,8 @@ ORDER BY FK", this.txtNewDBName.Text);
 
                 GenerateSQLFile(p.Value);
             }
+
+            this.chbStep4.Checked = true;
         }
 
         private void CleanDB()
@@ -325,6 +330,8 @@ delete Dashboard where UserId  not in (select Id from [User])";
                 }
             }
 
+            this.chbStep5.Checked = true;
+
         }
 
 
@@ -339,6 +346,8 @@ delete Dashboard where UserId  not in (select Id from [User])";
             string insert = "insert into UserRole(UserId,RoleId) values(1,-1)";
             DBHelper.ExecuteSql(insert);
 
+            this.chbStep6.Checked = true;
+
         }
 
         private void btnOthers_Click(object sender, EventArgs e)
@@ -346,61 +355,12 @@ delete Dashboard where UserId  not in (select Id from [User])";
             DBHelper.DBName = this.txtNewDBName.Text;
             UpdateHierarchy();
 
-            //UploadImageToOSS();
 
             MessageBox.Show("恭喜你，千辛万苦完成了升级！！");
 
             this.Close();
         }
 
-        private void UploadImageToOSS()
-        {
-            string accId = ConfigurationManager.AppSettings["accessId"];
-            string accKey = ConfigurationManager.AppSettings["accessKey"];
-            string proxyHost = ConfigurationManager.AppSettings["proxyHost"];
-            string proxyPort = ConfigurationManager.AppSettings["proxyPort"];
-            OssClient client = new OssClient(
-            new Uri("http://oss-cn-hangzhou.aliyuncs.com"),
-            accId,
-            accKey,
-            new Aliyun.OpenServices.ClientConfiguration
-            {
-                ProxyHost = proxyHost,
-                ProxyPort = int.Parse(proxyPort)
-            });
-
-            var sql = "select id, buildingId, Picture from BuildingPicture";
-
-            DataTable dt = DBHelper.QuerySql(sql);
-
-
-            foreach (DataRow dr in dt.Rows)
-            {
-                byte[] ss = (byte[])dr["Picture"];
-                using (MemoryStream oStream = new MemoryStream(ss))
-                {
-                    using (var oimg = Image.FromStream(oStream))
-                    {
-                        string type = "";
-                        if (oimg.RawFormat == ImageFormat.Jpeg)
-                        {
-                            type = "image/jpg";
-                        }
-                        else if (oimg.RawFormat == ImageFormat.Png)
-                        {
-                            type = "image/png";
-                        }
-                        else
-                        {
-                            type = "image/gif";
-                        }
-                        //client.PutObject("jazz", "" + item.Id + ".jpg", stream, new ObjectMetadata { ContentType = "image/jpg" });
-
-                    }
-                }
-
-            }
-        }
 
         private void UpdateHierarchy()
         {
@@ -445,11 +405,18 @@ UPDATE Hierarchy SET Path=@path, PathLevel=@pathlevel where ID=" + dr["Id"].ToSt
             cp.TableName = "AppKeySecret";
             cp.GenerateSQL();
 
+            string s = @"select 1 from sys.objects where object_id = OBJECT_ID('RecordCount')";
 
-            cp.TableName = "RecordCount";
-            cp.UpgradeColumnsName = new string[] { "CustomerId" };
-            cp.IncludingSp = true;
-            cp.GenerateSQL();
+            DataTable dt = DBHelper.QuerySql(s);
+
+            if (dt.Rows.Count == 1)
+            {
+
+                cp.TableName = "RecordCount";
+                cp.UpgradeColumnsName = new string[] { "CustomerId" };
+                cp.IncludingSp = true;
+                cp.GenerateSQL();
+            }
 
 
 
@@ -471,7 +438,120 @@ UPDATE Hierarchy SET Path=@path, PathLevel=@pathlevel where ID=" + dr["Id"].ToSt
 
         }
 
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            UploadImageToOSS();
+            this.chbStep7.Checked = true;
+        }
 
+
+        private void UploadImageToOSS()
+        {
+            string accId = this.txtAccessId.Text;
+            string accKey = this.txtAccessKey.Text;
+            string proxy = this.txtProxy.Text;
+            string proxyHost = "";
+            string proxyPort = "";
+            ClientConfiguration config = null;
+            if (!string.IsNullOrWhiteSpace(proxy))
+            {
+                string[] m = proxy.Split(':');
+                proxyHost = m[0];
+                proxyPort = m[1];
+                config = new ClientConfiguration
+                {
+                    ProxyHost = proxyHost,
+                    ProxyPort = int.Parse(proxyPort)
+                };
+            }
+
+            OssClient client = new OssClient(new Uri("http://oss-cn-hangzhou.aliyuncs.com"), accId, accKey, config);
+
+            foreach (KeyValuePair<string, int[]> p in DBHelper.DBMapper)
+            {
+                DBHelper.DBName = p.Key;
+
+                ExportBuildingCover(client, p.Value[0]);
+
+            }
+        }
+
+        private void ExportBuildingCover(OssClient client, int delta)
+        {
+            //OssObject obj = client.GetObject("sejazz", "cover-100001");
+
+            var sql = "select id, buildingId, Picture from BuildingPicture";
+
+            DataTable dt = DBHelper.QuerySql(sql);
+
+            this.prgbar.Step = 1;
+            this.prgbar.Value = 0;
+            this.prgbar.Maximum = dt.Rows.Count;
+            foreach (DataRow dr in dt.Rows)
+            {
+                byte[] ss = (byte[])dr["Picture"];
+                using (MemoryStream oStream = new MemoryStream(ss))
+                {
+                    using (var oimg = Image.FromStream(oStream))
+                    {
+                        string type = "";
+                        if (oimg.RawFormat.Guid == ImageFormat.Jpeg.Guid)
+                        {
+                            type = "image/jpg";
+                        }
+                        else if (oimg.RawFormat == ImageFormat.Png)
+                        {
+                            type = "image/png";
+                        }
+                        else
+                        {
+                            type = "image/gif";
+                        }
+                        long id = long.Parse(dr["Id"].ToString()) + delta;
+                        //File.WriteAllBytes("test.jpg", oStream.ToArray());
+                        oStream.Position = 0;
+
+                        PutObjectResult ret = client.PutObject("sejazz", "cover-" + id.ToString(), oStream, new ObjectMetadata { ContentType = type });
+                    }
+
+                    this.prgbar.PerformStep();
+                }
+
+            }
+        }
+
+        private void btnTestProxy_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(this.txtProxy.Text))
+            {
+                MessageBox.Show("Proxy is empty");
+                return;
+            }
+            string proxy = this.txtProxy.Text;
+            string[] mm = proxy.Split(':');
+            if (mm.Length != 2)
+            {
+                MessageBox.Show("Proxy is wrong");
+                return;
+            }
+            string proxyHost = mm[0];
+            string proxyPort = mm[1];
+            HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create("http://www.baidu.com");
+            httpRequest.Timeout = 2000;
+            httpRequest.Method = "GET";
+            httpRequest.Proxy = new WebProxy(proxyHost, int.Parse(proxyPort));
+            HttpWebResponse httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+            if (httpResponse.StatusCode != HttpStatusCode.OK)
+            {
+                MessageBox.Show("Proxy is not blocked");
+            }
+            else
+            {
+                MessageBox.Show("Proxy is good");
+            }
+
+
+        }
 
 
 

@@ -30,6 +30,13 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnTestProxy = new System.Windows.Forms.Button();
+            this.txtProxy = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtAccessKey = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtAccessId = new System.Windows.Forms.TextBox();
             this.lblConnectionStatus = new System.Windows.Forms.Label();
             this.txtDBName = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -39,22 +46,20 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnChangeConnectionString = new System.Windows.Forms.Button();
             this.grbProcess = new System.Windows.Forms.GroupBox();
-            this.btnOthers = new System.Windows.Forms.Button();
+            this.btnExport = new System.Windows.Forms.Button();
             this.chbStep7 = new System.Windows.Forms.CheckBox();
+            this.btnOthers = new System.Windows.Forms.Button();
+            this.chbStep8 = new System.Windows.Forms.CheckBox();
             this.chbStep3 = new System.Windows.Forms.CheckBox();
             this.lblCreateNewDBStatus = new System.Windows.Forms.Label();
             this.lsvSPList = new System.Windows.Forms.ListView();
             this.label12 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
             this.lblGenerateTotal = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.btnRestore = new System.Windows.Forms.Button();
             this.chbStep6 = new System.Windows.Forms.CheckBox();
             this.lblRemoveConstraintCount = new System.Windows.Forms.Label();
             this.btnRemoveConstraint = new System.Windows.Forms.Button();
-            this.lblGenerateTableName = new System.Windows.Forms.Label();
-            this.lblGenerateDBName = new System.Windows.Forms.Label();
             this.btnImport = new System.Windows.Forms.Button();
             this.chbStep5 = new System.Windows.Forms.CheckBox();
             this.btnGenerateSQLFile = new System.Windows.Forms.Button();
@@ -77,6 +82,13 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnTestProxy);
+            this.groupBox1.Controls.Add(this.txtProxy);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.txtAccessKey);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.txtAccessId);
             this.groupBox1.Controls.Add(this.lblConnectionStatus);
             this.groupBox1.Controls.Add(this.txtDBName);
             this.groupBox1.Controls.Add(this.label13);
@@ -87,10 +99,68 @@
             this.groupBox1.Controls.Add(this.btnChangeConnectionString);
             this.groupBox1.Location = new System.Drawing.Point(64, 33);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(962, 121);
+            this.groupBox1.Size = new System.Drawing.Size(962, 177);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "MetadataDB";
+            // 
+            // btnTestProxy
+            // 
+            this.btnTestProxy.Location = new System.Drawing.Point(847, 114);
+            this.btnTestProxy.Name = "btnTestProxy";
+            this.btnTestProxy.Size = new System.Drawing.Size(96, 36);
+            this.btnTestProxy.TabIndex = 15;
+            this.btnTestProxy.Text = "测试代理";
+            this.btnTestProxy.UseVisualStyleBackColor = true;
+            this.btnTestProxy.Click += new System.EventHandler(this.btnTestProxy_Click);
+            // 
+            // txtProxy
+            // 
+            this.txtProxy.Location = new System.Drawing.Point(662, 121);
+            this.txtProxy.Name = "txtProxy";
+            this.txtProxy.Size = new System.Drawing.Size(162, 22);
+            this.txtProxy.TabIndex = 14;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(550, 124);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(106, 17);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "代理（IP:Port）";
+            // 
+            // txtAccessKey
+            // 
+            this.txtAccessKey.Location = new System.Drawing.Point(350, 121);
+            this.txtAccessKey.Name = "txtAccessKey";
+            this.txtAccessKey.Size = new System.Drawing.Size(155, 22);
+            this.txtAccessKey.TabIndex = 12;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(264, 124);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(75, 17);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "OSS的Key";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(27, 124);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(62, 17);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "OSS的Id";
+            // 
+            // txtAccessId
+            // 
+            this.txtAccessId.Location = new System.Drawing.Point(106, 121);
+            this.txtAccessId.Name = "txtAccessId";
+            this.txtAccessId.Size = new System.Drawing.Size(143, 22);
+            this.txtAccessId.TabIndex = 9;
             // 
             // lblConnectionStatus
             // 
@@ -162,22 +232,20 @@
             // 
             // grbProcess
             // 
-            this.grbProcess.Controls.Add(this.btnOthers);
+            this.grbProcess.Controls.Add(this.btnExport);
             this.grbProcess.Controls.Add(this.chbStep7);
+            this.grbProcess.Controls.Add(this.btnOthers);
+            this.grbProcess.Controls.Add(this.chbStep8);
             this.grbProcess.Controls.Add(this.chbStep3);
             this.grbProcess.Controls.Add(this.lblCreateNewDBStatus);
             this.grbProcess.Controls.Add(this.lsvSPList);
             this.grbProcess.Controls.Add(this.label12);
-            this.grbProcess.Controls.Add(this.label10);
-            this.grbProcess.Controls.Add(this.label11);
             this.grbProcess.Controls.Add(this.lblGenerateTotal);
             this.grbProcess.Controls.Add(this.label8);
             this.grbProcess.Controls.Add(this.btnRestore);
             this.grbProcess.Controls.Add(this.chbStep6);
             this.grbProcess.Controls.Add(this.lblRemoveConstraintCount);
             this.grbProcess.Controls.Add(this.btnRemoveConstraint);
-            this.grbProcess.Controls.Add(this.lblGenerateTableName);
-            this.grbProcess.Controls.Add(this.lblGenerateDBName);
             this.grbProcess.Controls.Add(this.btnImport);
             this.grbProcess.Controls.Add(this.chbStep5);
             this.grbProcess.Controls.Add(this.btnGenerateSQLFile);
@@ -190,16 +258,37 @@
             this.grbProcess.Controls.Add(this.btnCreateDB);
             this.grbProcess.Controls.Add(this.btnSearchSPCount);
             this.grbProcess.Controls.Add(this.lblSPCount);
-            this.grbProcess.Location = new System.Drawing.Point(64, 179);
+            this.grbProcess.Location = new System.Drawing.Point(64, 228);
             this.grbProcess.Name = "grbProcess";
-            this.grbProcess.Size = new System.Drawing.Size(962, 530);
+            this.grbProcess.Size = new System.Drawing.Size(962, 501);
             this.grbProcess.TabIndex = 1;
             this.grbProcess.TabStop = false;
             this.grbProcess.Text = "操作流程";
             // 
+            // btnExport
+            // 
+            this.btnExport.Location = new System.Drawing.Point(244, 384);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(278, 35);
+            this.btnExport.TabIndex = 31;
+            this.btnExport.Text = "导出静态数据";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+            // 
+            // chbStep7
+            // 
+            this.chbStep7.AutoSize = true;
+            this.chbStep7.Enabled = false;
+            this.chbStep7.Location = new System.Drawing.Point(30, 392);
+            this.chbStep7.Name = "chbStep7";
+            this.chbStep7.Size = new System.Drawing.Size(126, 21);
+            this.chbStep7.TabIndex = 30;
+            this.chbStep7.Text = "7.导出静态数据";
+            this.chbStep7.UseVisualStyleBackColor = true;
+            // 
             // btnOthers
             // 
-            this.btnOthers.Location = new System.Drawing.Point(244, 436);
+            this.btnOthers.Location = new System.Drawing.Point(244, 435);
             this.btnOthers.Name = "btnOthers";
             this.btnOthers.Size = new System.Drawing.Size(278, 35);
             this.btnOthers.TabIndex = 29;
@@ -207,16 +296,16 @@
             this.btnOthers.UseVisualStyleBackColor = true;
             this.btnOthers.Click += new System.EventHandler(this.btnOthers_Click);
             // 
-            // chbStep7
+            // chbStep8
             // 
-            this.chbStep7.AutoSize = true;
-            this.chbStep7.Enabled = false;
-            this.chbStep7.Location = new System.Drawing.Point(30, 444);
-            this.chbStep7.Name = "chbStep7";
-            this.chbStep7.Size = new System.Drawing.Size(98, 21);
-            this.chbStep7.TabIndex = 28;
-            this.chbStep7.Text = "7.其他操作";
-            this.chbStep7.UseVisualStyleBackColor = true;
+            this.chbStep8.AutoSize = true;
+            this.chbStep8.Enabled = false;
+            this.chbStep8.Location = new System.Drawing.Point(30, 443);
+            this.chbStep8.Name = "chbStep8";
+            this.chbStep8.Size = new System.Drawing.Size(98, 21);
+            this.chbStep8.TabIndex = 28;
+            this.chbStep8.Text = "8.其他操作";
+            this.chbStep8.UseVisualStyleBackColor = true;
             // 
             // chbStep3
             // 
@@ -250,34 +339,16 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(347, 346);
+            this.label12.Location = new System.Drawing.Point(577, 286);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(92, 17);
             this.label12.TabIndex = 24;
             this.label12.Text = "总导入表数量";
             // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(578, 327);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(81, 17);
-            this.label10.TabIndex = 23;
-            this.label10.Text = "TableName";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(578, 292);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(82, 17);
-            this.label11.TabIndex = 22;
-            this.label11.Text = "SPDBName";
-            // 
             // lblGenerateTotal
             // 
             this.lblGenerateTotal.AutoSize = true;
-            this.lblGenerateTotal.Location = new System.Drawing.Point(347, 268);
+            this.lblGenerateTotal.Location = new System.Drawing.Point(577, 229);
             this.lblGenerateTotal.Name = "lblGenerateTotal";
             this.lblGenerateTotal.Size = new System.Drawing.Size(92, 17);
             this.lblGenerateTotal.TabIndex = 21;
@@ -286,7 +357,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(579, 391);
+            this.label8.Location = new System.Drawing.Point(579, 343);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(92, 17);
             this.label8.TabIndex = 20;
@@ -294,7 +365,7 @@
             // 
             // btnRestore
             // 
-            this.btnRestore.Location = new System.Drawing.Point(244, 379);
+            this.btnRestore.Location = new System.Drawing.Point(244, 331);
             this.btnRestore.Name = "btnRestore";
             this.btnRestore.Size = new System.Drawing.Size(278, 35);
             this.btnRestore.TabIndex = 19;
@@ -306,7 +377,7 @@
             // 
             this.chbStep6.AutoSize = true;
             this.chbStep6.Enabled = false;
-            this.chbStep6.Location = new System.Drawing.Point(30, 387);
+            this.chbStep6.Location = new System.Drawing.Point(30, 339);
             this.chbStep6.Name = "chbStep6";
             this.chbStep6.Size = new System.Drawing.Size(140, 21);
             this.chbStep6.TabIndex = 18;
@@ -332,27 +403,9 @@
             this.btnRemoveConstraint.UseVisualStyleBackColor = true;
             this.btnRemoveConstraint.Click += new System.EventHandler(this.btnRemoveConstraint_Click);
             // 
-            // lblGenerateTableName
-            // 
-            this.lblGenerateTableName.AutoSize = true;
-            this.lblGenerateTableName.Location = new System.Drawing.Point(579, 248);
-            this.lblGenerateTableName.Name = "lblGenerateTableName";
-            this.lblGenerateTableName.Size = new System.Drawing.Size(81, 17);
-            this.lblGenerateTableName.TabIndex = 14;
-            this.lblGenerateTableName.Text = "TableName";
-            // 
-            // lblGenerateDBName
-            // 
-            this.lblGenerateDBName.AutoSize = true;
-            this.lblGenerateDBName.Location = new System.Drawing.Point(578, 206);
-            this.lblGenerateDBName.Name = "lblGenerateDBName";
-            this.lblGenerateDBName.Size = new System.Drawing.Size(82, 17);
-            this.lblGenerateDBName.TabIndex = 13;
-            this.lblGenerateDBName.Text = "SPDBName";
-            // 
             // btnImport
             // 
-            this.btnImport.Location = new System.Drawing.Point(244, 296);
+            this.btnImport.Location = new System.Drawing.Point(244, 277);
             this.btnImport.Name = "btnImport";
             this.btnImport.Size = new System.Drawing.Size(278, 35);
             this.btnImport.TabIndex = 12;
@@ -364,7 +417,7 @@
             // 
             this.chbStep5.AutoSize = true;
             this.chbStep5.Enabled = false;
-            this.chbStep5.Location = new System.Drawing.Point(30, 304);
+            this.chbStep5.Location = new System.Drawing.Point(30, 285);
             this.chbStep5.Name = "chbStep5";
             this.chbStep5.Size = new System.Drawing.Size(140, 21);
             this.chbStep5.TabIndex = 11;
@@ -473,9 +526,9 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.prgbar});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 732);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 740);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1060, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1050, 22);
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -488,7 +541,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1060, 754);
+            this.ClientSize = new System.Drawing.Size(1050, 762);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.grbProcess);
             this.Controls.Add(this.groupBox1);
@@ -521,8 +574,6 @@
         private System.Windows.Forms.Button btnCreateDB;
         private System.Windows.Forms.Button btnSearchSPCount;
         private System.Windows.Forms.Label lblSPCount;
-        private System.Windows.Forms.Label lblGenerateTableName;
-        private System.Windows.Forms.Label lblGenerateDBName;
         private System.Windows.Forms.Button btnImport;
         private System.Windows.Forms.CheckBox chbStep5;
         private System.Windows.Forms.Button btnGenerateSQLFile;
@@ -536,8 +587,6 @@
         private System.Windows.Forms.Button btnRemoveConstraint;
         private System.Windows.Forms.Label lblGenerateTotal;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox txtDBName;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label lblConnectionStatus;
@@ -548,7 +597,16 @@
         private System.Windows.Forms.ToolStripProgressBar prgbar;
         private System.Windows.Forms.CheckBox chbStep3;
         private System.Windows.Forms.Button btnOthers;
+        private System.Windows.Forms.CheckBox chbStep8;
         private System.Windows.Forms.CheckBox chbStep7;
+        private System.Windows.Forms.Button btnTestProxy;
+        private System.Windows.Forms.TextBox txtProxy;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txtAccessKey;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtAccessId;
+        private System.Windows.Forms.Button btnExport;
     }
 }
 

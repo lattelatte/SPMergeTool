@@ -38,7 +38,7 @@ namespace SPMerge.Util
             List.Add(new UpgradeObject() { TableName = "CustomerLabellingItem", UpdateColumns = new string[] { "Id", "LabellingId" } });
             List.Add(new UpgradeObject() { TableName = "Dashboard", UpdateColumns = new string[] { "Id", "CustomerId", "HierarchyId", "UserId" } });
             List.Add(new UpgradeObject() { TableName = "Edge", UpdateColumns = new string[] { "Id", "EntryEdgeId", "DirectEdgeId", "ExitEdgeId", "StartVertex", "EndVertex" } });
-            List.Add(new UpgradeObject() { TableName = "Hierarchy", UpdateColumns = new string[] { "Id", "ParentId", "CustomerId" } });
+            List.Add(new UpgradeObject() { TableName = "Hierarchy", UpdateColumns = new string[] { "Id", "ParentId", "CustomerId", "SpId" } });
             List.Add(new UpgradeObject() { TableName = "HierarchyAdvancedPropertyVersion", UpdateColumns = new string[] { "Id", "HierarchyId" } });
             List.Add(new UpgradeObject() { TableName = "HierarchyCalendar", UpdateColumns = new string[] { "Id", "PropertyVersionId", "CalendarId", "WorkTimeId" } });
             List.Add(new UpgradeObject() { TableName = "HierarchyCalendarReference", UpdateColumns = new string[] { "Id", "HierarchyId", "PropertyVersionId" } });

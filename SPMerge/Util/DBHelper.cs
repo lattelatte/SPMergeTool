@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SPMerge.Util
 {
@@ -52,7 +53,7 @@ namespace SPMerge.Util
 
                 connStr = reg.Replace(connStr, "Database=" + DBName);
             }
-
+            //MessageBox.Show(connStr);
             return connStr;
         }
 
@@ -84,6 +85,7 @@ namespace SPMerge.Util
 
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
+                    cmd.CommandTimeout = 300;
                     using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                     {
                         adapter.Fill(dt);
@@ -108,6 +110,7 @@ namespace SPMerge.Util
                         if (string.IsNullOrWhiteSpace(sql)) continue;
                         using (SqlCommand cmd = new SqlCommand(sql, conn))
                         {
+                            cmd.CommandTimeout = 300;
                             cmd.ExecuteNonQuery();
                         }
 
@@ -135,6 +138,7 @@ namespace SPMerge.Util
                     {
                         using (SqlCommand cmd = new SqlCommand(item, conn))
                         {
+                            cmd.CommandTimeout = 300;
                             cmd.ExecuteNonQuery();
                         }
                     }
@@ -148,10 +152,12 @@ namespace SPMerge.Util
 
             using (SqlConnection conn = new SqlConnection(GetConnString()))
             {
+
                 conn.Open();
 
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
+                    cmd.CommandTimeout = 300;
                     cmd.ExecuteNonQuery();
                 }
             }
